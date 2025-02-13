@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security & Privacy Settings</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+        }
+        input, button {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        input:focus {
+            border-color: #0568a6;
+            outline: none;
+        }
+        button {
+            background: #0568a6;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #034f7d;
+        }
+        .toggle-switch {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        .delete-btn {
+            background: red;
+        }
+        .delete-btn:hover {
+            background: darkred;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+       
+        <a href="expense-tracking.html">Expense Tracking</a>
+        <a href="budget-planner.html">Budget Planner</a>
+        <a href="financial-advice.html">AI Financial Advice</a>
+        <a href="savings-investment.html">Savings & Investment</a>
+        <a href="reports-insights.html">Visual Reports</a>
+    </nav>
+
+    <div class="container">
+        <h2>Security & Privacy Settings</h2>
+
+        <h3>Change Password</h3>
+        <input type="password" id="old-password" placeholder="Old Password" required>
+        <input type="password" id="new-password" placeholder="New Password" required>
+        <button onclick="changePassword()">Update Password</button>
+
+        <div class="toggle-switch">
+            <label for="enable-2fa">Enable 2FA</label>
+            <input type="checkbox" id="enable-2fa" onchange="toggle2FA()">
+        </div>
+
+        <h3>Delete Account</h3>
+        <button class="delete-btn" onclick="confirmDeleteAccount()">Delete Account</button>
+    </div>
+
+    <script>
+        function changePassword() {
+            const oldPassword = document.getElementById('old-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            if (oldPassword && newPassword) {
+                alert('Password updated successfully!');
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        function toggle2FA() {
+            const isEnabled = document.getElementById('enable-2fa').checked;
+            alert(isEnabled ? '2FA Enabled' : '2FA Disabled');
+        }
+
+        function confirmDeleteAccount() {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                alert('Account deleted successfully.');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracking</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        input, select {
+            border: 1px solid #ccc;
+        }
+        button {
+            background: #007bff;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #007bff;
+            color: #ffffff;
+        }
+        canvas {
+            margin-top: 20px;
+        }
+        .progress-container {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .progress-bar {
+            width: 100%;
+            background: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .progress-bar div {
+            height: 20px;
+            background: #28a745;
+            width: 0%;
+            text-align: center;
+            color: white;
+            line-height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        
+        <a href="expense-tracking.html">Expense Tracking</a>
+        <a href="financial-advice.html">AI Financial Advice</a>
+        <a href="savings-investment.html">Savings & Investment</a>
+        <a href="reports-insights.html">Visual Reports</a>
+        <a href="security-settings.html">Security Settings</a>
+    </nav>
+
+    <div class="container">
+        <h2>Expense Tracking</h2>
+        <form id="expense-form">
+            <input type="number" id="amount" placeholder="Amount" required>
+            <select id="category" required>
+                <option value="Food">Food</option>
+                <option value="Transport">Transport</option>
+                <option value="Rent">Rent</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Other">Other</option>
+            </select>
+            <input type="date" id="date" required>
+            <select id="payment-method" required>
+                <option value="Cash">Cash</option>
+                <option value="Credit Card">Credit Card</option>
+                <option value="Debit Card">Debit Card</option>
+                <option value="UPI">UPI</option>
+            </select>
+            <input type="text" id="notes" placeholder="Notes (optional)">
+            <button type="button" onclick="addExpense()">Add Expense</button>
+        </form>
+
+        <h3>Expense List</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Payment Method</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody id="expense-list"></tbody>
+        </table>
+        
+        <h3>Monthly Expense Summary</h3>
+        <canvas id="expense-chart"></canvas>
+
+        <h3>Budget Planner</h3>
+        <input type="number" id="budget" placeholder="Set Monthly Budget" required>
+        <button type="button" onclick="setBudget()">Set Budget</button>
+        <div class="progress-container">
+            <p>Budget Utilization</p>
+            <div class="progress-bar">
+                <div id="budget-progress"></div>
+            </div>
+        </div>
+        <p id="budget-alert" style="color: red; display: none;">Budget Exceeded!</p>
+    </div>
+
+    <script>
+       let expenses = [];
+let budget = 0;
+
+function addExpense() {
+    const amount = parseFloat(document.getElementById('amount').value);
+    const category = document.getElementById('category').value;
+    const date = document.getElementById('date').value;
+    const paymentMethod = document.getElementById('payment-method').value;
+    const notes = document.getElementById('notes').value;
+
+    if (amount && category && date && paymentMethod) {
+        const expense = { amount, category, date, paymentMethod, notes };
+        expenses.push(expense);
+        updateExpenseList();
+        updateChart();
+        updateBudgetProgress(); // Update progress after adding an expense
+    }
+}
+
+function updateExpenseList() {
+    const list = document.getElementById('expense-list');
+    list.innerHTML = '';
+    expenses.forEach(expense => {
+        list.innerHTML += `
+            <tr>
+                <td>$${expense.amount.toFixed(2)}</td>
+                <td>${expense.category}</td>
+                <td>${expense.date}</td>
+                <td>${expense.paymentMethod}</td>
+                <td>${expense.notes || '-'}</td>
+            </tr>
+        `;
+    });
+}
+
+function updateChart() {
+    const ctx = document.getElementById('expense-chart').getContext('2d');
+    const categories = {};
+
+    expenses.forEach(expense => {
+        categories[expense.category] = (categories[expense.category] || 0) + expense.amount;
+    });
+
+    const labels = Object.keys(categories);
+    const data = Object.values(categories);
+
+    if (window.expenseChart) {
+        window.expenseChart.destroy(); // Prevent chart overlap
+    }
+
+    window.expenseChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Expenses by Category',
+                data: data,
+                backgroundColor: '#0568a6',
+            }]
+        }
+    });
+}
+
+function setBudget() {
+    budget = parseFloat(document.getElementById('budget').value);
+    updateBudgetProgress();
+}
+
+function updateBudgetProgress() {
+    let totalSpent = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+    let percentage = budget > 0 ? Math.min((totalSpent / budget) * 100, 100) : 0;
+    
+    const progressBar = document.getElementById('budget-progress');
+    progressBar.style.width = percentage + '%';
+    progressBar.textContent = percentage.toFixed(1) + '%';
+
+    document.getElementById('budget-alert').style.display = totalSpent > budget ? 'block' : 'none';
+}
+
+    </script>
+</body>
+</html>

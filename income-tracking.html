@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav>
+       
+        <a href="expense-tracking.html">Expense Tracking</a>
+        <a href="budget-planner.html">Budget Planner</a>
+        <a href="financial-advice.html">AI Financial Advice</a>
+        <a href="savings-investment.html">Savings & Investment</a>
+        <a href="reports-insights.html">Visual Reports</a>
+        <a href="security-settings.html">Security Settings</a>
+    </nav>
+
+    <div class="container">
+        <h2>Income Tracking</h2>
+        <form id="income-form">
+            <input type="number" id="income-amount" placeholder="Amount" required>
+            <select id="income-source" required>
+                <option value="Salary">Salary</option>
+                <option value="Freelance">Freelance</option>
+                <option value="Business">Business</option>
+                <option value="Investments">Investments</option>
+                <option value="Other">Other</option>
+            </select>
+            <input type="date" id="income-date" required>
+            <button type="button" onclick="addIncome()">Add Income</button>
+        </form>
+        <h3>Income List</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Source</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="income-list"></tbody>
+        </table>
+    </div>
+
+    <script>
+        let incomes = [];
+
+        function addIncome() {
+            const amount = document.getElementById('income-amount').value;
+            const source = document.getElementById('income-source').value;
+            const date = document.getElementById('income-date').value;
+
+            if (amount && source && date) {
+                incomes.push({ amount: Number(amount), source, date });
+                updateIncomeList();
+            }
+        }
+
+        function deleteIncome(index) {
+            incomes.splice(index, 1);
+            updateIncomeList();
+        }
+
+        function updateIncomeList() {
+            const list = document.getElementById('income-list');
+            list.innerHTML = '';
+            incomes.forEach((income, index) => {
+                list.innerHTML += `<tr><td>${income.amount}</td><td>${income.source}</td><td>${income.date}</td><td><button onclick="deleteIncome(${index})">Delete</button></td></tr>`;
+            });
+        }
+    </script>
+</body>
+</html>

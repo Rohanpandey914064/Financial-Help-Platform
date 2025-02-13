@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracking</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        button {
+            background: #0568a6;
+            color: #ffffff;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: all 0.3s ease-in-out;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #034f7d;
+            transform: scale(1.05);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ccc;
+        }
+        th {
+            background: #0568a6;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+        .delete-btn {
+            background: red;
+            color: white;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .delete-btn:hover {
+            background: darkred;
+        }
+        .empty-message {
+            color: #777;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        canvas {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        
+        <a href="income-tracking.html">Income Tracking</a>
+        <a href="budget-planner.html">Budget Planner</a>
+        <a href="financial-advice.html">AI Financial Advice</a>
+        <a href="savings-investment.html">Savings & Investment</a>
+        <a href="reports-insights.html">Visual Reports</a>
+        <a href="security-settings.html">Security Settings</a>
+    </nav>
+
+    <div class="container">
+        <h2>📊 Expense Tracking</h2>
+        <p>Track your daily expenses and visualize spending patterns.</p>
+        <form id="expense-form">
+            <input type="number" id="amount" placeholder="Amount" required>
+            <select id="category" required>
+                <option value="Food">Food</option>
+                <option value="Transport">Transport</option>
+                <option value="Rent">Rent</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Other">Other</option>
+            </select>
+            <input type="date" id="date" required>
+            <select id="payment-method" required>
+                <option value="Cash">Cash</option>
+                <option value="Credit Card">Credit Card</option>
+                <option value="Debit Card">Debit Card</option>
+                <option value="UPI">UPI</option>
+            </select>
+            <input type="text" id="notes" placeholder="Notes (optional)">
+            <button type="button" onclick="addExpense()">Add Expense</button>
+        </form>
+
+        <h3>Expense List</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Payment</th>
+                    <th>Notes</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="expense-list">
+                <tr class="empty-message"><td colspan="6">No expenses added yet.</td></tr>
+            </tbody>
+        </table>
+        
+        <h3>Monthly Expense Summary</h3>
+        <canvas id="expense-chart"></canvas>
+    </div>
+
+    <script>
+        let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+
+        function addExpense() {
+            const amount = document.getElementById('amount').value;
+            const category = document.getElementById('category').value;
+            const date = document.getElementById('date').value;
+            const paymentMethod = document.getElementById('payment-method').value;
+            const notes = document.getElementById('notes').value;
+
+            if (amount && category && date && paymentMethod) {
+                const expense = { amount, category, date, paymentMethod, notes };
+                expenses.push(expense);
+                localStorage.setItem("expenses", JSON.stringify(expenses));
+                updateExpenseList();
+                updateChart();
+            }
+        }
+
+        function deleteExpense(index) {
+            expenses.splice(index, 1);
+            localStorage.setItem("expenses", JSON.stringify(expenses));
+            updateExpenseList();
+            updateChart();
+        }
+
+        function updateExpenseList() {
+            const list = document.getElementById('expense-list');
+            list.innerHTML = expenses.length === 0 ? 
+                '<tr class="empty-message"><td colspan="6">No expenses added yet.</td></tr>' 
+                : "";
+
+            expenses.forEach((expense, index) => {
+                list.innerHTML += `
+                    <tr>
+                        <td>₹${expense.amount}</td>
+                        <td>${expense.category}</td>
+                        <td>${expense.date}</td>
+                        <td>${expense.paymentMethod}</td>
+                        <td>${expense.notes}</td>
+                        <td><button class="delete-btn" onclick="deleteExpense(${index})">Delete</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function updateChart() {
+            const ctx = document.getElementById('expense-chart').getContext('2d');
+            const categories = {};
+
+            expenses.forEach(expense => {
+                categories[expense.category] = (categories[expense.category] || 0) + Number(expense.amount);
+            });
+
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(categories),
+                    datasets: [{ data: Object.values(categories), backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'] }]
+                }
+            });
+        }
+
+        updateExpenseList();
+        updateChart();
+    </script>
+</body>
+</html>

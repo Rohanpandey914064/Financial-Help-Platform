@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Authentication</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #0568a6, #034f7d);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            color: #000;
+        }
+
+        .form-box {
+            display: none;
+        }
+
+        .form-box h2 {
+            color: #0568a6;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #2480b9;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #37a1e4;
+        }
+
+        .google-signin {
+            background: #db4437;
+            margin-top: 10px;
+        }
+
+        a {
+            color: #0568a6;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        #login {
+            display: block;
+        }
+
+        .switch-form {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Form -->
+        <div id="login" class="form-box">
+            <h2>Login</h2>
+            <input type="email" id="login-email" placeholder="Email" required>
+            <input type="password" id="login-password" placeholder="Password" required>
+            <a href="#" onclick="showResetPassword()">Forgot Password?</a>
+            <button onclick="login()">Login</button>
+            <p class="switch-form">Don't have an account? <a href="#" onclick="showSignUp()">Sign Up</a></p>
+            <button class="google-signin">Sign in with Google</button>
+        </div>
+        
+        <!-- Sign-Up Form -->
+        <div id="signup" class="form-box">
+            <h2>Sign Up</h2>
+            <input type="text" id="signup-name" placeholder="Full Name" required>
+            <input type="email" id="signup-email" placeholder="Email" required>
+            <input type="password" id="signup-password" placeholder="Password" required>
+            <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+            <button onclick="signUp()">Sign Up</button>
+            <p class="switch-form">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+        </div>
+
+        <!-- Reset Password Form -->
+        <div id="reset-password" class="form-box">
+            <h2>Reset Password</h2>
+            <input type="email" id="reset-email" placeholder="Enter your email" required>
+            <button onclick="resetPassword()">Reset Password</button>
+            <p class="switch-form">Back to <a href="#" onclick="showLogin()">Login</a></p>
+        </div>
+    </div>
+
+    <script>
+        function showSignUp() {
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('signup').style.display = 'block';
+            document.getElementById('reset-password').style.display = 'none';
+        }
+        
+        function showLogin() {
+            document.getElementById('login').style.display = 'block';
+            document.getElementById('signup').style.display = 'none';
+            document.getElementById('reset-password').style.display = 'none';
+        }
+        
+        function showResetPassword() {
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('signup').style.display = 'none';
+            document.getElementById('reset-password').style.display = 'block';
+        }
+
+        function login() {
+            window.location.href = "dashboard.html";
+        }
+        
+        function signUp() {
+            window.location.href = "dashboard.html";
+        }
+        
+        function resetPassword() {
+            alert("Password reset functionality coming soon!");
+        }
+    </script>
+</body>
+</html>

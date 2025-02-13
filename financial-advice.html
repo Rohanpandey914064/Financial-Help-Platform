@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Based Financial Advice</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function generateAdvice() {
+            const spending = Math.random() * 100; // Simulated spending analysis
+            let advice = "";
+
+            if (spending < 30) {
+                advice = "✅ Great job! You're saving well. Consider investing in a SIP for long-term gains.";
+            } else if (spending < 70) {
+                advice = "💡 You're managing your finances well. Try allocating 20% of your income towards savings.";
+            } else {
+                advice = "⚠️ Your spending is high. Consider reducing unnecessary expenses and setting a strict budget.";
+            }
+
+            document.getElementById("advice-card").style.display = "block";
+            document.getElementById("advice-text").innerText = "Generating Advice...";
+            
+            setTimeout(() => {
+                document.getElementById("advice-text").innerText = advice;
+            }, 1000); // Simulating AI processing delay
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            background: #0568a6;
+            color: #ffffff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease-in-out;
+            margin-top: 15px;
+        }
+        button:hover {
+            background: #034f7d;
+            transform: scale(1.05);
+        }
+        .advice-card {
+            display: none;
+            background: #eef5f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+            color: #034f7d;
+        }
+       
+    </style>
+</head>
+<body>
+    <nav>
+       
+        <a href="income-tracking.html">Income Tracking</a>
+        <a href="expense-tracking.html">Expense Tracking</a>
+        <a href="budget-planner.html">Budget Planner</a>
+        <a href="savings-investment.html">Savings & Investment</a>
+        <a href="reports-insights.html">Visual Reports</a>
+        <a href="security-settings.html">Security Settings</a>
+    </nav>
+
+    <div class="container">
+        <h2>🔍 AI-Based Financial Advice</h2>
+        <p>Get smart financial tips based on your spending habits.</p>
+        <button onclick="generateAdvice()">Get Advice</button>
+        <div id="advice-card" class="advice-card">
+            <p id="advice-text"></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .balance-summary {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #0568a6;
+            font-weight: bold;
+        }
+        .actions button {
+            background: #0568a6;
+            color: #ffffff;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease-in-out;
+        }
+        .actions button:hover {
+            background: #034f7d;
+            transform: scale(1.05);
+        }
+        .transactions {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .transactions ul {
+            list-style: none;
+            padding: 0;
+        }
+        .transactions li {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
+        }
+        .transactions li span {
+            font-weight: bold;
+        }
+        .financial-tips {
+            margin-top: 20px;
+            font-style: italic;
+            color: #0568a6;
+            font-size: 16px;
+        }
+        canvas {
+            margin-top: 20px;
+        }
+       
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="financial-advice.html">AI Financial Advice</a>
+        <a href="savings-investment.html">Savings & Investment</a>
+        <a href="reports-insights.html">Visual Reports</a>
+        <a href="security-settings.html">Security Settings</a>
+    </nav>
+
+    <div class="container">
+        <h2>Welcome, Rohan</h2>
+        <div class="balance-summary">
+            Total Balance: <strong>$1,000</strong>
+        </div>
+        <div class="actions">
+            <button onclick="addExpense()">Add Expense</button>
+            <button onclick="addIncome()">Add Income</button>
+            <button onclick="setBudget()">Set Budget</button>
+        </div>
+        <canvas id="expenseChart"></canvas>
+        <div class="transactions">
+            <h3>Recent Transactions</h3>
+            <ul>
+                <li><span>Groceries</span> - $50</li>
+                <li><span>Electricity Bill</span> - $30</li>
+                <li><span>Salary</span> - $2,000</li>
+            </ul>
+        </div>
+        <div class="financial-tips">
+            <h3>AI Financial Tips</h3>
+            <p>Try to save at least 20% of your income every month!</p>
+        </div>
+    </div>
+
+    <script>
+        function addExpense() {
+            window.location.href = "expense-tracking.html";
+        }
+        function addIncome() {
+            window.location.href = "income-tracking.html";
+        }
+        function setBudget() {
+            window.location.href = "budget-planner.html";
+        }
+        
+        // Chart.js for expense insights
+        const ctx = document.getElementById('expenseChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Groceries', 'Bills', 'Entertainment'],
+                datasets: [{
+                    data: [50, 30, 20],
+                    backgroundColor: ['#0568a6', '#f2a900', '#ff4d4d']
+                }]
+            }
+        });
+    </script>
+</body>
+</html>

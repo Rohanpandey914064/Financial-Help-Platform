@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savings & Investment Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9fafb;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 60px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        input, select, button {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button {
+            background: #007BFF;
+            color: #ffffff;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #007BFF;
+            color: #ffffff;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress {
+            height: 20px;
+            background: #28a745;
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+       
+        <a href="expense-tracking.html">Expense Tracking</a>
+        <a href="budget-planner.html">Budget Planner</a>
+        <a href="financial-advice.html">AI Financial Advice</a>
+        <a href="reports-insights.html">Visual Reports</a>
+        <a href="security-settings.html">Security Settings</a>
+    </nav>
+
+    <div class="container">
+        <h2>Savings & Investment Tracker</h2>
+        
+        <h3>Set Savings Goals</h3>
+        <form id="savings-form">
+            <input type="text" id="goal-name" placeholder="Goal Name" required>
+            <input type="number" id="target-amount" placeholder="Target Amount" required>
+            <input type="date" id="target-date" required>
+            <input type="number" id="saved-amount" placeholder="Amount Saved" required>
+            <button type="button" onclick="addGoal()">Add Goal</button>
+        </form>
+        
+        <h3>Goals List</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Goal</th>
+                    <th>Target</th>
+                    <th>Saved</th>
+                    <th>Progress</th>
+                </tr>
+            </thead>
+            <tbody id="goals-list"></tbody>
+        </table>
+        
+        <h3>Investment Tracker</h3>
+        <form id="investment-form">
+            <input type="text" id="investment-name" placeholder="Investment Type (FD, Stock, etc.)" required>
+            <input type="number" id="investment-amount" placeholder="Investment Amount" required>
+            <button type="button" onclick="addInvestment()">Add Investment</button>
+        </form>
+        
+        <h3>Investment List</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody id="investment-list"></tbody>
+        </table>
+    </div>
+    
+    <script>
+        let goals = [];
+        let investments = [];
+
+        function addGoal() {
+            const name = document.getElementById('goal-name').value;
+            const target = document.getElementById('target-amount').value;
+            const saved = document.getElementById('saved-amount').value;
+            
+            if (name && target && saved) {
+                goals.push({ name, target: Number(target), saved: Number(saved) });
+                updateGoalsList();
+            }
+        }
+
+        function updateGoalsList() {
+            const list = document.getElementById('goals-list');
+            list.innerHTML = '';
+            goals.forEach(goal => {
+                const progress = (goal.saved / goal.target) * 100;
+                list.innerHTML += `
+                    <tr>
+                        <td>${goal.name}</td>
+                        <td>${goal.target}</td>
+                        <td>${goal.saved}</td>
+                        <td>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: ${progress}%"></div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function addInvestment() {
+            const name = document.getElementById('investment-name').value;
+            const amount = document.getElementById('investment-amount').value;
+            
+            if (name && amount) {
+                investments.push({ name, amount: Number(amount) });
+                updateInvestmentList();
+            }
+        }
+
+        function updateInvestmentList() {
+            const list = document.getElementById('investment-list');
+            list.innerHTML = '';
+            investments.forEach(investment => {
+                list.innerHTML += `
+                    <tr>
+                        <td>${investment.name}</td>
+                        <td>${investment.amount}</td>
+                    </tr>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Reports & Insights</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #e0f7fa, #ffffff);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .chart-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        canvas {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        
+        <a href="expense-tracking.html">Expense Tracking</a>
+        <a href="budget-planner.html">Budget Planner</a>
+        <a href="financial-advice.html">AI Financial Advice</a>
+        <a href="savings-investment.html">Savings & Investment</a>
+        <a href="security-settings.html">Security Settings</a>
+    </nav>
+
+    <div class="container">
+        <h2>Visual Reports & Insights</h2>
+
+        <div class="chart-card">
+            <h3>Spending Trends</h3>
+            <canvas id="spendingTrendsChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h3>Category Breakdown</h3>
+            <canvas id="categoryBreakdownChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h3>Income vs. Expenses</h3>
+            <canvas id="incomeVsExpensesChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
+        const spendingTrendsData = [100, 200, 150, 300, 250, 400, 350];
+        const categoriesData = [300, 200, 150, 100, 250];
+        const incomeData = [500, 600, 550, 700, 750, 800, 850];
+        const expensesData = [400, 450, 500, 550, 600, 650, 700];
+
+        // Spending Trends Chart
+        new Chart(document.getElementById("spendingTrendsChart"), {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Spending Trends",
+                    data: spendingTrendsData,
+                    borderColor: "#ff5733",
+                    backgroundColor: "rgba(255, 87, 51, 0.2)",
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: { responsive: true }
+        });
+
+        // Category Breakdown Chart
+        new Chart(document.getElementById("categoryBreakdownChart"), {
+            type: "doughnut",
+            data: {
+                labels: ["Food", "Transport", "Rent", "Shopping", "Others"],
+                datasets: [{
+                    data: categoriesData,
+                    backgroundColor: ["#ff5733", "#33ff57", "#3357ff", "#ff33a1", "#ffbb33"],
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        // Income vs. Expenses Chart
+        new Chart(document.getElementById("incomeVsExpensesChart"), {
+            type: "bar",
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: "Income",
+                        data: incomeData,
+                        backgroundColor: "rgba(51, 255, 87, 0.6)",
+                        borderWidth: 1
+                    },
+                    {
+                        label: "Expenses",
+                        data: expensesData,
+                        backgroundColor: "rgba(255, 87, 51, 0.6)",
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
